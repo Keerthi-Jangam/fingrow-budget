@@ -17,5 +17,11 @@ export interface Transaction {
     getAllTransactions(): Transaction[] {
         return this.transactions;
       }
+
+      getIncome(): number {
+      return 1000
+      }
+
+
   }
   
