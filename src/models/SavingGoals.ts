@@ -20,7 +20,10 @@ export class SavingsManager {
 
 
   checkProgress(title: string): number | undefined {
-  
+    const savings = this.user.savings.find(s => s.title === title);
+    if (savings) {
+      return (savings.current / savings.target) * 100;
+    }
     return undefined;
   }
 }
