@@ -20,7 +20,8 @@ export class BudgetManager {
     }
   }
   checkIfExceeded(categoryTitle: string): boolean {
-   return true
+    const category = this.user.categories.find(c => c.title === categoryTitle);
+    return category ? category.spentTillNow > category.budgetAmount : false;
   }
 
 
