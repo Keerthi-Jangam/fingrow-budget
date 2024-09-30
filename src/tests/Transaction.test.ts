@@ -25,4 +25,10 @@ describe('Transaction Management', () => {
     expect(transactions[1].description).toBe('Rent');
   });
   
+  it('should calculate total income', () => {
+    transactionManager.addTransaction('Salary', 5000, 'income');
+    transactionManager.addTransaction('Bonus', 2000, 'income');
+    expect(transactionManager.getIncome()).toBe(7000);
+  });
+
 });
