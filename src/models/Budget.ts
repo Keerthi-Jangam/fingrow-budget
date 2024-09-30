@@ -19,5 +19,9 @@ export class BudgetManager {
       category.spentTillNow += amount;
     }
   }
+  checkIfExceeded(categoryTitle: string): boolean {
+   return true
+  }
+
 
 }
