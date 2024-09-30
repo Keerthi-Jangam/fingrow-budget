@@ -36,7 +36,15 @@ describe('Alerts System', () => {
       expect(alerts).toContain('You are close to reaching your savings goal for Emergency!');
     }
   });
-
+  it('should return an empty array if there are no alerts', () => {
+    const user = userManager.getUser("keerthi");
+    if (user) {
+      user.categories[0].spentTillNow = 5000; 
+      user.savings[0].current = 8000; 
+      const alerts = alertSystem.checkForAlerts();
+      expect(alerts).toHaveLength(0);
+    }
+  });
  
  
 });
