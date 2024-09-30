@@ -19,7 +19,9 @@ export interface Transaction {
       }
 
       getIncome(): number {
-      return 1000
+        return this.transactions
+        .filter(t => t.type === 'income')
+        .reduce((acc, t) => acc + t.amount, 0);
       }
 
 
