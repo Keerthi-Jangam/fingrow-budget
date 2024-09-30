@@ -30,3 +30,4 @@ export const data = [
     otherSavings: 5000,
   },
 ];
+    
