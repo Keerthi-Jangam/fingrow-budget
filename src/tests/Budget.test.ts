@@ -1,5 +1,5 @@
 import { UserManager } from "../models/UserManager";
-import { BudgetManager } from "../models/budget";
+import { BudgetManager } from "../models/Budget";
 
 describe('Budget Management', () => {
   let userManager: UserManager;

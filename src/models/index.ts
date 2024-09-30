@@ -1,5 +1,5 @@
 import { UserManager,User } from './UserManager';
-import { BudgetManager } from './budget';
+import { BudgetManager } from './Budget';
 import { SavingsManager } from './SavingGoals';
 import { ReportGenerator } from './Report';
 import { AlertSystem } from './Alerts';
