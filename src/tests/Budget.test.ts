@@ -37,5 +37,11 @@ describe('Budget Management', () => {
     budgetManager.updateSpent('Food', 1000);
     expect(budgetManager['user'].categories[0].spentTillNow).toBe(6000);
   });
+  it('should check if the budget is exceeded', () => {
+    const exceeded = budgetManager.checkIfExceeded('Food');
+    expect(exceeded).toBe(false);
+    budgetManager.updateSpent('Food', 4000);
+    expect(budgetManager.checkIfExceeded('Food')).toBe(true);
+  });
   
 });
