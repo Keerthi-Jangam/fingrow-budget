@@ -13,4 +13,11 @@ export class BudgetManager {
       category.budgetAmount = amount;
     }
   }
+  updateSpent(categoryTitle: string, amount: number): void {
+    const category = this.user.categories.find(c => c.title === categoryTitle);
+    if (category) {
+      category.spentTillNow += amount;
+    }
+  }
+
 }
