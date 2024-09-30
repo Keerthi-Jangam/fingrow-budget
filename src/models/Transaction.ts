@@ -23,6 +23,10 @@ export interface Transaction {
         .filter(t => t.type === 'income')
         .reduce((acc, t) => acc + t.amount, 0);
       }
+   
+      getExpenses(): number {
+        return 10000
+      }
 
 
   }
