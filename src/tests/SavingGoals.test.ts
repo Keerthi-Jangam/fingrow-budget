@@ -35,4 +35,9 @@ describe('Savings Goals Management', () => {
   });
 
 
+  it('should check the progress of savings goal', () => {
+    const progress = savingsManager.checkProgress('Emergency');
+    expect(progress).toBe(100);
+  });
+
 })
