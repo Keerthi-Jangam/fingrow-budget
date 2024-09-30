@@ -33,6 +33,9 @@ describe('Budget Management', () => {
     budgetManager.setBudget('Food', 9000);
     expect(budgetManager['user'].categories[0].budgetAmount).toBe(9000);
   });
-
+  it('should update the spent amount for a category', () => {
+    budgetManager.updateSpent('Food', 1000);
+    expect(budgetManager['user'].categories[0].spentTillNow).toBe(6000);
+  });
   
 });
