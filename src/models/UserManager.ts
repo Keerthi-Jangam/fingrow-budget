@@ -26,6 +26,8 @@ export interface User {
         this.users.push(user);
         return user;
       }
-  
+      getUser(name: string): User | undefined {
+        return this.users.find(user => user.name === name);
+      }
   }
   
