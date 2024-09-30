@@ -17,4 +17,10 @@ export class SavingsManager {
       savings.current += amount;
     }
   }
+
+
+  checkProgress(title: string): number | undefined {
+  
+    return undefined;
+  }
 }
