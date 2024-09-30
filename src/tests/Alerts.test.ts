@@ -28,6 +28,15 @@ describe('Alerts System', () => {
     const alerts = alertSystem.checkForAlerts();
     expect(alerts).toContain('Budget for Food exceeded!');
   });
+  it('should alert when savings goal is close to being reached', () => {
+    const user = userManager.getUser("keerthi");
+    if (user) {
+      user.savings[0].current = 9000;
+      const alerts = alertSystem.checkForAlerts();
+      expect(alerts).toContain('You are close to reaching your savings goal for Emergency!');
+    }
+  });
 
+ 
  
 });
