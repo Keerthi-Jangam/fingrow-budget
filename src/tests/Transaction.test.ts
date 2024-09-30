@@ -31,4 +31,10 @@ describe('Transaction Management', () => {
     expect(transactionManager.getIncome()).toBe(7000);
   });
 
+  it('should calculate total expenses', () => {
+    transactionManager.addTransaction('Groceries', 500, 'expense');
+    transactionManager.addTransaction('Rent', 1200, 'expense');
+    expect(transactionManager.getExpenses()).toBe(1700);
+  });
+
 });
