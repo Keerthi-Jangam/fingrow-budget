@@ -10,4 +10,8 @@ export class SavingsManager {
   addSavings(title: string, target: number): void {
     this.user.savings.push({ title, target, current: 0 });
   }
+
+  updateCurrent(title: string, amount: number): void {
+  
+  }
 }
