@@ -12,6 +12,9 @@ export class SavingsManager {
   }
 
   updateCurrent(title: string, amount: number): void {
-  
+    const savings = this.user.savings.find(s => s.title === title);
+    if (savings) {
+      savings.current += amount;
+    }
   }
 }
