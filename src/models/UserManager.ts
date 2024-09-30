@@ -22,7 +22,10 @@ export interface User {
   
   export class UserManager {
     private users: User[] = [];
-  
+    addUser(user: User): User {
+        this.users.push(user);
+        return user;
+      }
   
   }
   
