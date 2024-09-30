@@ -14,6 +14,8 @@ export interface Transaction {
         return transaction;
     }
   
-   
+    getAllTransactions(): Transaction[] {
+        return this.transactions;
+      }
   }
   
