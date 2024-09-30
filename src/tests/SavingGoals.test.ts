@@ -1,8 +1,7 @@
 import { UserManager } from "../models/UserManager";
 import { SavingsManager } from "../models/SavingGoals";
 
-
-describe('Savings Goals Management', () => {
+describe("Savings Goals Management", () => {
   let userManager: UserManager;
   let savingsManager: SavingsManager;
 
@@ -24,20 +23,22 @@ describe('Savings Goals Management', () => {
     savingsManager = new SavingsManager(user);
   });
 
-  it('should add a new savings goal', () => {
-    savingsManager.addSavings('New Goal', 20000);
-    expect(userManager.getUser('keerthi')?.savings.length).toBe(3);
+  it("should add a new savings goal", () => {
+    savingsManager.addSavings("New Goal", 20000);
+    expect(userManager.getUser("keerthi")?.savings.length).toBe(3);
   });
 
-  it('should update the current savings amount', () => {
-    savingsManager.updateCurrent('Emergency', 2000);
-    expect(userManager.getUser('keerthi')?.savings.find(s => s.title === 'Emergency')?.current).toBe(10000);
+  it("should update the current savings amount", () => {
+    savingsManager.updateCurrent("Emergency", 2000);
+    expect(
+      userManager
+        .getUser("keerthi")
+        ?.savings.find((s) => s.title === "Emergency")?.current
+    ).toBe(10000);
   });
 
-
-  it('should check the progress of savings goal', () => {
-    const progress = savingsManager.checkProgress('Emergency');
-    expect(progress).toBe(100);
+  it("should check the progress of savings goal", () => {
+    const progress = savingsManager.checkProgress("Emergency");
+    expect(progress).toBe(80);
   });
-
-})
+});
