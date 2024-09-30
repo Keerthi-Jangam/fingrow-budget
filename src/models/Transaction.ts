@@ -25,7 +25,9 @@ export interface Transaction {
       }
    
       getExpenses(): number {
-        return 10000
+        return this.transactions
+        .filter(t => t.type === 'expense')
+        .reduce((acc, t) => acc + t.amount, 0);
       }
 
 
