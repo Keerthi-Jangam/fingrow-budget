@@ -29,7 +29,12 @@ export interface Transaction {
         .filter(t => t.type === 'expense')
         .reduce((acc, t) => acc + t.amount, 0);
       }
-
+      getTransactionSummary(): { totalIncome: number; totalExpenses: number } {
+        return {
+          totalIncome: this.getIncome(),
+          totalExpenses: this.getExpenses(),
+        };
+      }
 
   }
   
