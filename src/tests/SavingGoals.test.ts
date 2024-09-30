@@ -28,4 +28,11 @@ describe('Savings Goals Management', () => {
     savingsManager.addSavings('New Goal', 20000);
     expect(userManager.getUser('keerthi')?.savings.length).toBe(3);
   });
+
+  it('should update the current savings amount', () => {
+    savingsManager.updateCurrent('Emergency', 2000);
+    expect(userManager.getUser('keerthi')?.savings.find(s => s.title === 'Emergency')?.current).toBe(10000);
+  });
+
+
 })
