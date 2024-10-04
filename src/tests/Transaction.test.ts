@@ -1,50 +1,79 @@
-import { TransactionManager } from "../models/Transaction";
 
-describe('Transaction Management', () => {
-  let transactionManager: TransactionManager;
+import { createTransaction, getTransactionsByUser } from '../controllers/transactionController';
+import Transaction from '../models/Transaction';
+import { Request, Response } from 'express';
+
+jest.mock('../src/models/Transaction');
+
+describe('Transaction Controller', () => {
+  let req: Partial<Request>;
+  let res: Partial<Response>;
 
   beforeEach(() => {
-    transactionManager = new TransactionManager();
+    req = {
+      body: {
+        userId: 'testUserId',
+        amount: 100,
+        category: 'Groceries',
+        date: new Date(),
+      },
+      params: {
+        userId: 'testUserId',
+      },
+    };
+
+    res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    };
   });
 
-  it('should add a transaction', () => {
-    const transaction = transactionManager.addTransaction('Salary', 5000, 'income');
-    expect(transaction.description).toBe('Salary');
-    expect(transaction.amount).toBe(5000);
-    expect(transaction.type).toBe('income');
-    expect(transaction.date).toBeInstanceOf(Date);
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
-  it('should return all transactions', () => {
-    transactionManager.addTransaction('Salary', 5000, 'income');
-    transactionManager.addTransaction('Rent', 1200, 'expense');
-    
-    const transactions = transactionManager.getAllTransactions();
-    expect(transactions.length).toBe(2);
-    expect(transactions[0].description).toBe('Salary');
-    expect(transactions[1].description).toBe('Rent');
-  });
-  
-  it('should calculate total income', () => {
-    transactionManager.addTransaction('Salary', 5000, 'income');
-    transactionManager.addTransaction('Bonus', 2000, 'income');
-    expect(transactionManager.getIncome()).toBe(7000);
-  });
+  describe('createTransaction', () => {
+    it('should create a new transaction and return it', async () => {
+      const mockTransaction = { userId: 'testUserId', amount: 100, category: 'Groceries' };
+      (Transaction.prototype.save as jest.Mock).mockResolvedValue(mockTransaction);
 
-  it('should calculate total expenses', () => {
-    transactionManager.addTransaction('Groceries', 500, 'expense');
-    transactionManager.addTransaction('Rent', 1200, 'expense');
-    expect(transactionManager.getExpenses()).toBe(1700);
-  });
+      await createTransaction(req as Request, res as Response);
 
-  it('should calculate total income and expenses summary', () => {
-    transactionManager.addTransaction('Salary', 5000, 'income');
-    transactionManager.addTransaction('Rent', 1200, 'expense');
-    transactionManager.addTransaction('Groceries', 500, 'expense');
+      expect(res.status).toHaveBeenCalledWith(201);
+      expect(res.json).toHaveBeenCalledWith(mockTransaction);
+    });
 
-    const summary = transactionManager.getTransactionSummary();
-    expect(summary.totalIncome).toBe(5000);
-    expect(summary.totalExpenses).toBe(1700);
+    it('should handle errors when creating a transaction', async () => {
+      (Transaction.prototype.save as jest.Mock).mockRejectedValue(new Error('Failed to save'));
+
+      await createTransaction(req as Request, res as Response);
+
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({ error: 'Failed to save' });
+    });
   });
 
+  describe('getTransactionsByUser', () => {
+    it('should return transactions for a user', async () => {
+      const mockTransactions = [
+        { amount: 100, category: 'Groceries', date: new Date() },
+        { amount: 50, category: 'Transport', date: new Date() },
+      ];
+      (Transaction.find as jest.Mock).mockResolvedValue(mockTransactions);
+
+      await getTransactionsByUser(req as Request, res as Response);
+
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith(mockTransactions);
+    });
+
+    it('should handle errors when getting transactions', async () => {
+      (Transaction.find as jest.Mock).mockRejectedValue(new Error('Failed to fetch transactions'));
+
+      await getTransactionsByUser(req as Request, res as Response);
+
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.json).toHaveBeenCalledWith({ error: 'Failed to fetch transactions' });
+    });
+  });
 });

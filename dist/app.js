@@ -1,0 +1,32 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.app = void 0;
+const express_1 = __importDefault(require("express"));
+const dotenv_1 = __importDefault(require("dotenv"));
+const db_1 = require("./config/db");
+const transactionRoutes_1 = __importDefault(require("./routes/transactionRoutes"));
+const budgetRoutes_1 = __importDefault(require("./routes/budgetRoutes"));
+const savingGoalRoutes_1 = __importDefault(require("./routes/savingGoalRoutes"));
+const userRoutes_1 = __importDefault(require("./routes/userRoutes"));
+const alertRoutes_1 = __importDefault(require("./routes/alertRoutes"));
+const reportRoutes_1 = __importDefault(require("./routes/reportRoutes"));
+const mongoose_1 = __importDefault(require("mongoose"));
+dotenv_1.default.config();
+const app = (0, express_1.default)();
+exports.app = app;
+const PORT = process.env.PORT || 3000;
+mongoose_1.default.set('strictQuery', false);
+app.use(express_1.default.json());
+(0, db_1.connectDB)();
+app.use("/api/transactions", transactionRoutes_1.default);
+app.use("/api/budgets", budgetRoutes_1.default);
+app.use("/api/savings-goals", savingGoalRoutes_1.default);
+app.use("/api/users", userRoutes_1.default);
+app.use("/api/alerts", alertRoutes_1.default);
+app.use("/api/reports", reportRoutes_1.default);
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});

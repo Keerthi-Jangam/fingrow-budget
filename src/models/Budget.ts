@@ -1,28 +1,18 @@
-import { User } from "./UserManager";
+import mongoose, { Document, Schema } from "mongoose";
 
-export class BudgetManager {
-  private user: User;
-
-  constructor(user: User) {
-    this.user = user;
-  }
-
-  setBudget(categoryTitle: string, amount: number): void {
-    const category = this.user.categories.find(c => c.title === categoryTitle);
-    if (category) {
-      category.budgetAmount = amount;
-    }
-  }
-  updateSpent(categoryTitle: string, amount: number): void {
-    const category = this.user.categories.find(c => c.title === categoryTitle);
-    if (category) {
-      category.spentTillNow += amount;
-    }
-  }
-  checkIfExceeded(categoryTitle: string): boolean {
-    const category = this.user.categories.find(c => c.title === categoryTitle);
-    return category ? category.spentTillNow > category.budgetAmount : false;
-  }
-
-
+interface IBudget extends Document {
+  userId: mongoose.Types.ObjectId;
+  category: string;
+  limit: number;
+  spent: number;
 }
+
+const budgetSchema: Schema<IBudget> = new Schema({
+  userId: { type: Schema.Types.ObjectId, ref: "User", required: true }, 
+  category: { type: String, required: true },
+  limit: { type: Number, required: true },
+  spent: { type: Number, default: 0 },
+});
+
+const Budget = mongoose.model<IBudget>("Budget", budgetSchema);
+export default Budget;
