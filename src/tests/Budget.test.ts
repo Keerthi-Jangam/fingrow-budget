@@ -1,7 +1,7 @@
-import { UserManager } from "../models/UserManager";
+import { UserManager } from "../models/user";
 import { BudgetManager } from "../models/Budget";
 
-describe('Budget Management', () => {
+describe("Budget Management", () => {
   let userManager: UserManager;
   let budgetManager: BudgetManager;
 
@@ -29,19 +29,18 @@ describe('Budget Management', () => {
     budgetManager = new BudgetManager(user);
   });
 
-  it('should set a budget for a category', () => {
-    budgetManager.setBudget('Food', 9000);
-    expect(budgetManager['user'].categories[0].budgetAmount).toBe(9000);
+  it("should set a budget for a category", () => {
+    budgetManager.setBudget("Food", 9000);
+    expect(budgetManager["user"].categories[0].budgetAmount).toBe(9000);
   });
-  it('should update the spent amount for a category', () => {
-    budgetManager.updateSpent('Food', 1000);
-    expect(budgetManager['user'].categories[0].spentTillNow).toBe(6000);
+  it("should update the spent amount for a category", () => {
+    budgetManager.updateSpent("Food", 1000);
+    expect(budgetManager["user"].categories[0].spentTillNow).toBe(6000);
   });
-  it('should check if the budget is exceeded', () => {
-    const exceeded = budgetManager.checkIfExceeded('Food');
+  it("should check if the budget is exceeded", () => {
+    const exceeded = budgetManager.checkIfExceeded("Food");
     expect(exceeded).toBe(false);
-    budgetManager.updateSpent('Food', 4000);
-    expect(budgetManager.checkIfExceeded('Food')).toBe(true);
+    budgetManager.updateSpent("Food", 4000);
+    expect(budgetManager.checkIfExceeded("Food")).toBe(true);
   });
-  
 });

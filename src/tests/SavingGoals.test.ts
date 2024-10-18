@@ -1,4 +1,4 @@
-import { UserManager } from "../models/UserManager";
+import { UserManager } from "../models/user";
 import { SavingsManager } from "../models/SavingGoals";
 
 describe("Savings Goals Management", () => {

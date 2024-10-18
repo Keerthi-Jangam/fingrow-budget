@@ -1,4 +1,4 @@
-import { User } from "./UserManager";
+import { User } from "./user";
 
 export class ReportGenerator {
   private user: User;
@@ -9,8 +9,13 @@ export class ReportGenerator {
 
   generateReport(): string {
     const totalIncome = this.user.totalIncome;
-    const totalExpenses = this.user.categories.reduce((total, category) => total + category.spentTillNow, 0);
-    const savingsProgress = this.user.savings.map(s => `${s.title}: ${s.current}/${s.target}`).join(', ');
+    const totalExpenses = this.user.categories.reduce(
+      (total, category) => total + category.spentTillNow,
+      0
+    );
+    const savingsProgress = this.user.savings
+      .map((s) => `${s.title}: ${s.current}/${s.target}`)
+      .join(", ");
 
     return `
       Total Income: ${totalIncome}
