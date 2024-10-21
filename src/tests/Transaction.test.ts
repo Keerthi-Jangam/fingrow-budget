@@ -1,50 +1,44 @@
-import { TransactionManager } from "../models/Transaction";
+import { Transaction, transactions } from '../models/transaction';
+import { User, users } from '../models/user';
+import { budgets } from '../models/budget';
+import { Savings, savings } from '../models/saving';
 
-describe('Transaction Management', () => {
-  let transactionManager: TransactionManager;
+describe('Transaction Class', () => {
+    beforeEach(() => {
+        transactions.length = 0;
+        users.length = 0;
+        budgets.length = 0;
+        savings.length = 0;
+    });
 
-  beforeEach(() => {
-    transactionManager = new TransactionManager();
-  });
+    console.log(users);
+    it('should not perform transaction if the user is not found', () => {
+        const transaction = new Transaction('debit', 'Test Transaction', 100, 'others', 'mammu');
+        const result = transaction.doTransaction();
+        expect(result).toBe('User not found.');
+    });
 
-  it('should add a transaction', () => {
-    const transaction = transactionManager.addTransaction('Salary', 5000, 'income');
-    expect(transaction.description).toBe('Salary');
-    expect(transaction.amount).toBe(5000);
-    expect(transaction.type).toBe('income');
-    expect(transaction.date).toBeInstanceOf(Date);
-  });
+    it('should successfully add income in a transaction', async() => {
+        const user = new User('Mammu', '1234', 500, 500);
+        await user.create();
+        const transaction = new Transaction('credit', 'Salary', 200, 'others', 'Mammu');
+        const result = transaction.doTransaction();
+        expect(result).toBe('Transaction made successfully.');
+        expect(user.totalIncome).toBe(700);
+        expect(user.balance).toBe(700);
+        expect(transactions).toHaveLength(1);
+    });
 
-  it('should return all transactions', () => {
-    transactionManager.addTransaction('Salary', 5000, 'income');
-    transactionManager.addTransaction('Rent', 1200, 'expense');
-    
-    const transactions = transactionManager.getAllTransactions();
-    expect(transactions.length).toBe(2);
-    expect(transactions[0].description).toBe('Salary');
-    expect(transactions[1].description).toBe('Rent');
-  });
-  
-  it('should calculate total income', () => {
-    transactionManager.addTransaction('Salary', 5000, 'income');
-    transactionManager.addTransaction('Bonus', 2000, 'income');
-    expect(transactionManager.getIncome()).toBe(7000);
-  });
 
-  it('should calculate total expenses', () => {
-    transactionManager.addTransaction('Groceries', 500, 'expense');
-    transactionManager.addTransaction('Rent', 1200, 'expense');
-    expect(transactionManager.getExpenses()).toBe(1700);
-  });
-
-  it('should calculate total income and expenses summary', () => {
-    transactionManager.addTransaction('Salary', 5000, 'income');
-    transactionManager.addTransaction('Rent', 1200, 'expense');
-    transactionManager.addTransaction('Groceries', 500, 'expense');
-
-    const summary = transactionManager.getTransactionSummary();
-    expect(summary.totalIncome).toBe(5000);
-    expect(summary.totalExpenses).toBe(1700);
-  });
-
+    it('should record transaction in savings if found', () => {
+        const user = new User('Nikitha', '1234', 500, 500);
+        users.push(user);
+        const saving = new Savings('Nikitha');
+        savings.push(saving);
+        saving.createGoal('Vacation', 1000);
+        const transaction = new Transaction('credit', 'Vacation', 200, 'saving', 'Nikitha');
+        const result = transaction.doTransaction();
+        expect(result).toBe('Transaction recorded in savings.');
+        expect(saving.goals[0].current).toBe(200);
+    });
 });
