@@ -1,14 +1,7 @@
-import type { Config } from '@jest/types';
+import type {Config} from 'jest';
 
-const config: Config.InitialOptions = {
-    preset: 'ts-jest',
-    testEnvironment: 'node',
-    verbose: true,
-    roots: ['<rootDir>/src/tests'],
-    moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-    transform: {
-        '^.+\\.tsx?$': 'ts-jest',
-    },
+const config: Config = {
+  verbose: true,
 };
 
 export default config;
