@@ -2,7 +2,7 @@
 
 ## Project Title
 
-#### FINEGROW
+#### FINGROW
 
 ---
 
@@ -22,7 +22,7 @@
 
 ---
 
-The **FINEGROW** Where our application should help users manage their income, expenses, and savings goals, providing insights into their financial habits and encouraging better financial decision-making.
+The **FINGROW** Where our application should help users manage their income, expenses, and savings goals, providing insights into their financial habits and encouraging better financial decision-making.
 
 #### Features:
 
@@ -62,7 +62,7 @@ The **FINEGROW** Where our application should help users manage their income, ex
 
    ```bash
    git clone https://github.com/Keerthi-Jangam/fingrow-budget.git
-   cd FinegrowBudget
+   cd FingrowBudget
 2. **Install Dependencies**:
 
          npm install
