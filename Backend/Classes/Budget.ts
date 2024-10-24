@@ -36,15 +36,15 @@ export class Budget{
             "title":title,
             "target":target,
             "spent":0,
-            "transactions":[]
         })
         await budget.save();
+        user.balance -= target;
+        await user.save();
         return `Added budget ${title} successfully`
     }
 
-    async makeTransaction(title:string, amount:number, date:Date){
+    async makeTransaction(transactionName:string,title:string, amount:number, date:Date){
         const user = await UserModel.findOne({name:this.username});
-        console.log(user)
         if (!user) {
             return "User with the given username is not present";
         }
@@ -67,6 +67,7 @@ export class Budget{
         }
         
         const transaction = await TransactionModel.create({
+            transactionName:transactionName,
             title: title,
             amount: amount,
             on:"budget",
@@ -75,9 +76,8 @@ export class Budget{
             userId:user._id
         });
         await transaction.save();
-
+        console.log("Transaction saved")
         budget.categories[index].spent += amount;
-        budget.categories[index].transactions.push(transaction._id)
         user.balance -= amount;
 
         await budget.save();
@@ -101,7 +101,7 @@ export class Budget{
         if (index===-1) {
             return `Category "${title}" does not  exists. Can't make transactions.`;
         }
-        if(amount<user.balance){
+        if(amount>user.balance){
             return `Can't make a transaction as insufficient funds`;
         }
         if(amount < budget.categories[index].spent){

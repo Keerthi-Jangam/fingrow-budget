@@ -3,6 +3,7 @@ import csv from 'csv-parser';
 import { Transaction } from '../Classes/Transactions';
 
 interface ITransaction {
+    transactionName:string,
     title: string;
     amount: number;
     on: string; 
@@ -32,7 +33,7 @@ export const processCSV=async()=>{
         }));
         for(const item of processedData){
             console.log(item)
-            const T = new Transaction(item.title,item.amount,item.on,item.username,item.date)
+            const T = new Transaction(item.transactionName,item.title,item.amount,item.on,item.username,item.date)
             const result = await T.doTransaction();
             console.log(result)
         }

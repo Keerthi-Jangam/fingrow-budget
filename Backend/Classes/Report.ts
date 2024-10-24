@@ -21,19 +21,26 @@ export class Report {
         });
         let totalIncome=0;
         let totalExpenses=0;
+        let income:any=[]
+        let expenses:any=[]
         transactions.map(
             (transaction) => {
                 if (transaction.type === 'credit') {
                     totalIncome += transaction.amount;
-                } else if (transaction.type === 'debit') {
+                    income.push(transaction)
+                }  else{
                     totalExpenses += transaction.amount;
+                    expenses.push(transaction)
                 }
             },
         );
         const report={
             "totalIncome":totalIncome,
-            "totalExpenses":totalExpenses
+            "totalExpenses":totalExpenses,
+            "income":income,
+            "expenses":expenses
         }
+        console.log(report)
         return report;
     }
 
@@ -57,7 +64,7 @@ export class Report {
                 usagePercentage: `${usagePercentage}%`,
             };
         });
-
+        console.log("summary", summary)
         return summary;
     }
 
@@ -70,7 +77,7 @@ export class Report {
         const savings = await SavingsModel.findOne({ userId: user._id });
 
         if (!savings) {
-            throw new Error(`Savings not found for user: ${this.username}`);
+            return(`Savings not found for user: ${this.username}`);
         }
 
         const progress = savings.savings.map((saving) => {
@@ -82,6 +89,7 @@ export class Report {
                 progressPercentage: `${progressPercentage}%`,
             };
         });
+        console.log("progress",progress)
 
         return progress;
     }

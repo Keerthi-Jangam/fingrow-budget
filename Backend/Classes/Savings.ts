@@ -28,18 +28,19 @@ export class Savings{
         if (savingsExist) {
             return `Savings ${title} already exists. Can't add.`;
         }
-
+        if(target>user.balance){
+            return "Total amount in account is not sufficient to add goal";
+        }
         saving.savings.push({
             "title":title,
             "target":target,
             "current":0,
-            "transactions":[]
         })
         await saving.save();
         return `Added saving goal ${title} successfully.`
     }
 
-    async makeTransaction(title:string, amount:number, date:Date){
+    async makeTransaction(transactionName:string,title:string, amount:number, date:Date){
         const user = await UserModel.findOne({name:this.username})
         if (!user) {
             return "User with the given username is not present";
@@ -62,17 +63,17 @@ export class Savings{
         }
         
         const transaction = await TransactionModel.create({
+            transactionName:transactionName,
             title: title,
             amount: amount,
             on:"saving",
             date: date,
-            type:"debit",
+            type:"credit",
             userId:user._id
         });
 
         await transaction.save();
         saving.savings[index].current += amount;
-        saving.savings[index].transactions.push(transaction._id)
         user.balance -= amount;
 
         await saving.save();
@@ -100,6 +101,9 @@ export class Savings{
         );
         if(index===-1) {
             return `Saving "${title}" does not  exists. Can't make transactions.`;
+        }
+        if(amount>user.balance){
+            return `Can't make a transaction as insufficient funds`;
         }
         if(amount < saving.savings[index].current){
             return "Can't update the target amount as it is becoming less than current saved"

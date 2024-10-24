@@ -1,5 +1,8 @@
 import axios from "axios";
-const API_URL = `http://localhost:3000/api`;
+import { UserModel } from "../Collections/User";
+import { User } from "../Classes/User";
+import mongoose from "mongoose";
+const API_URL = `http://localhost:5050/api`;
 jest.mock("axios");
 
 describe("Checking post request of user", () => {
@@ -7,11 +10,19 @@ describe("Checking post request of user", () => {
         jest.clearAllMocks();
     });
 
+    it('should create a user successfully', async () => {
+        const saveMock = jest.spyOn(UserModel.prototype, 'save').mockResolvedValue('User Created Succesfully');
+        const user = new User('Usha', '1234', 10000, 10000); 
+        const result = await user.create();
+        expect(saveMock).toHaveBeenCalled();
+        expect(result).toBe('User Created Succesfully');
+    });
+
     it("Should succesfully create a user and returm success message", async () => {
         const res = {
             status: 200,
             data: {
-                name: "Keerthi",
+                name: "Usha",
                 password: "1234",
                 totalIncome: 10000,
                 balance: 10000,
@@ -29,7 +40,7 @@ describe("Checking post request of user", () => {
         const response = await axios.post(`${API_URL}/users`, user);
         expect(response.status).toBe(200);
         expect(response.data).toEqual({
-            name: "Keerthi",
+            name: "Usha",
             password: "1234",
             totalIncome: 10000,
             balance: 10000,

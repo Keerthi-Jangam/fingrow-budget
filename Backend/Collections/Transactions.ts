@@ -2,6 +2,7 @@ import { Schema } from "mongoose";
 import { config } from "../Config/Config";
 
 interface ITransaction extends Document {
+    transactionName:string
     title:string
     amount: number;
     type: string;
@@ -11,6 +12,10 @@ interface ITransaction extends Document {
 }
 
 const transactionSchema = new Schema({
+    transactionName:{
+        type:String,
+        required:true
+    },
     title:{
         type:String,
         required:true

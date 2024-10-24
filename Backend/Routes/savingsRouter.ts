@@ -6,10 +6,19 @@ savingsRouter.post('/savings/:username',async(req,res)=>{
     try {
         const saving = new Savings(req.params.username);
         const {title, target } = req.body;
+        if (!title || !target) {
+            res.status(400).send("Form Incomplete");
+            return;
+        }
         const result = await saving.createSaving(title, target);
-        res.send(result)
+        if (result === `Added saving goal ${title} successfully.`) {
+            res.status(200).send(result);
+        } else {
+            res.status(500).send(`Error adding savings`);
+            return;
+        }
     } catch (error:any) {
-        res.status(500).send('Error creating saving: ' + error.message);
+       throw new Error('Error creating saving: ' + error.message);
     }
 })
 

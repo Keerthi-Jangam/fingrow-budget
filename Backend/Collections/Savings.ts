@@ -3,8 +3,7 @@ import { config } from "../Config/Config";
 
 interface ISavings extends Document{
     userId: Schema.Types.ObjectId,
-    savings:Array<{"title":string,"target":number,"current":number,"transactions":Array<Types.ObjectId>}>
-   
+    savings:Array<{"title":string,"target":number,"current":number}>
 }
 
 const savingsSchema = new Schema({
@@ -26,7 +25,6 @@ const savingsSchema = new Schema({
             type:Number,
             required:true,
         },
-        transactions: [{ type: Schema.Types.ObjectId, ref: "transactions" }],
     }],
 })
 

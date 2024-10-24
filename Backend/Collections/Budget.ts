@@ -3,7 +3,7 @@ import { config } from "../Config/Config";
 
 interface IBudget extends Document{
     userId: Schema.Types.ObjectId,
-    categories:Array<{"title":string,"target":number,"spent":number,"transactions":Array<Types.ObjectId>}>
+    categories:Array<{"title":string,"target":number,"spent":number,}>
 }
 
 const budgetSchema = new Schema({
@@ -26,7 +26,6 @@ const budgetSchema = new Schema({
                 type: Number,
                 required: true,
             },
-            transactions: [{ type: Schema.Types.ObjectId, ref: "transactions" }],
         },
     ],
 });
